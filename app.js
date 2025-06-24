@@ -88,9 +88,9 @@ app.post('/borrarUsuario', (req, res) => {
 
 app.post('/editarUsuario', (req, res) => {
     const id = req.body.id;
-    const nombre = req.body.nombre;
+    const nombreNuevo = req.body.nombre;
 
-    con.query('UPDATE usuario SET nombre = ? WHERE id_usuarios = ?', [id,nombre], (err, resultado) => {
+    con.query('UPDATE usuario SET nombre = ? WHERE id_usuario = ?', [id,nombreNuevo], (err, resultado) => {
         if (err) {
             console.error('Error al editar el usuario:', err);
             return res.status(500).send("Error al editar el usuario");
@@ -98,6 +98,6 @@ app.post('/editarUsuario', (req, res) => {
         if (resultado.affectedRows === 0) {
             return res.status(404).send("Usuario no encontrado");
         }
-        return res.send(`Usuario con ID ${id} actualizado correctamente a: ${nombre}`);
+        return res.send(`Usuario con ID ${id} actualizado correctamente a: ${nombreNuevo}`);
     });
 });
