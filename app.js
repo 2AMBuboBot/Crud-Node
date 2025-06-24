@@ -5,8 +5,8 @@ var app=express()
 var con=mysql.createConnection({
     host:'localhost',
     user:'root',
-    password:'root',
-    database:'5IV8'
+    password:'n0m3l0',
+    database:'crud-node'
 })
 con.connect();
 
