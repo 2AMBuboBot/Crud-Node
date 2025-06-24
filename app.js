@@ -90,7 +90,7 @@ app.post('/editarUsuario', (req, res) => {
     const id = req.body.id;
     const nombreNuevo = req.body.nombre;
 
-    con.query('UPDATE usuario SET nombre = ? WHERE id_usuario = ?', [id,nombreNuevo], (err, resultado) => {
+    con.query('UPDATE usuario SET nombre = ? WHERE id_usuario = ?', [nombreNuevo,id], (err, resultado) => {
         if (err) {
             console.error('Error al editar el usuario:', err);
             return res.status(500).send("Error al editar el usuario");
