@@ -6,7 +6,7 @@ var con=mysql.createConnection({
     host:'localhost',
     user:'root',
     password:'n0m3l0',
-    database:'crud-node'
+    database:'Crud-Node'
 })
 con.connect();
 
@@ -17,20 +17,21 @@ app.use(bodyParser.urlencoded({
 }))
 app.use(express.static('public'))
 
-app.post('/agregarUsuario',(req,res)=>{
-        let nombre=req.body.nombre
-        let id=req.body.id
+// fun agregar
 
-        con.query('INSERT INTO usuario (id_usuario, nombre) VALUES (?, ?)', [id, nombre], (err, respuesta, fields) => {
-            if (err) {
-                console.log("Error al conectar", err);
-                return res.status(500).send("Error al conectar");
-            }
-           
-            return res.send(`<h1>Nombre:</h1> ${nombre}`);
-        });
-   
-})
+app.post('/agregarUsuario', (req, res) => {
+    let nombre = req.body.nombre;
+    let id = req.body.id;
+
+    con.query('INSERT INTO usuario (id_usuario, nombre) VALUES (?, ?)', [id, nombre], (err, respuesta) => {
+        if (err) {
+            console.log("Error al conectar", err);
+            return res.status(500).send("Error al conectar");
+        }
+
+        return res.send(`<h1>Usuario agregado</h1><p>ID: ${id}</p><p>Nombre: ${nombre}</p>`);
+    });
+});
 
 app.listen(10000,()=>{
     console.log('Servidor escuchando en el puerto 10000')
@@ -65,6 +66,8 @@ app.get('/obtenerUsuario',(req,res)=>{
     });
 });
 
+//fun eliminar 
+
 app.post('/borrarUsuario', (req, res) => {
     const id = req.body.id; // El ID del usuario a eliminar viene en el cuerpo de la solicitud
     console.log("hola")
@@ -78,5 +81,23 @@ app.post('/borrarUsuario', (req, res) => {
             return res.status(404).send("Usuario no encontrado");
         }
         return res.send(`Usuario con ID ${id} borrado correctamente`);
+    });
+});
+
+//fun modificar
+
+app.post('/editarUsuario', (req, res) => {
+    const id = req.body.id;
+    const nombre = req.body.nombre;
+
+    con.query('UPDATE usuario SET nombre = ? WHERE id_usuario = ?', [id,nombre], (err, resultado) => {
+        if (err) {
+            console.error('Error al editar el usuario:', err);
+            return res.status(500).send("Error al editar el usuario");
+        }
+        if (resultado.affectedRows === 0) {
+            return res.status(404).send("Usuario no encontrado");
+        }
+        return res.send(`Usuario con ID ${id} actualizado correctamente a: ${nombre}`);
     });
 });
